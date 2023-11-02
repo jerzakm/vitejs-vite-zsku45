@@ -4,11 +4,11 @@ Command: npx @threlte/gltf@2.0.0 ./src/statics/models/child.glb
 -->
 
 <script>
-  import { T, forwardEventHandlers } from '@threlte/core';
-  import { useGltf } from '@threlte/extras';
-  import { childModified } from '../stores';
+  import { T, forwardEventHandlers } from "@threlte/core";
+  import { useGltf } from "@threlte/extras";
+  import { childModified } from "../stores";
 
-  const gltf = useGltf(`src/statics/models/child-v1.glb`, { useDraco: true });
+  const gltf = useGltf(`/child-v1.glb`, { useDraco: true });
 
   const component = forwardEventHandlers();
 
@@ -32,11 +32,10 @@ Command: npx @threlte/gltf@2.0.0 ./src/statics/models/child.glb
       material="{gltf.nodes.child.material}"
     /> -->
   <T
-    is="{gltf.nodes.child.geometry}"
-    dispose="{false}"
+    is={gltf.nodes.child.geometry}
+    dispose={false}
     {...$$restProps}
-    bind:this="{$component}"
-  />
+    bind:this={$component} />
 {:catch error}
   <slot name="error" {error} />
 {/await}

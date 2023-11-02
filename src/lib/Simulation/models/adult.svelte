@@ -9,7 +9,7 @@ Command: npx @threlte/gltf@2.0.0 ./src/statics/models/adult.glb
   import { useGltf } from "@threlte/extras";
   import { adultModified } from "../stores";
 
-  const gltf = useGltf(`src/statics/models/adult-v1.glb`, { useDraco: true });
+  const gltf = useGltf(`/adult-v1.glb`, { useDraco: true });
 
   const component = forwardEventHandlers();
 
