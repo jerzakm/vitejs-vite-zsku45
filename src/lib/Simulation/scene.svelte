@@ -75,16 +75,41 @@
     Matrix4,
     Vector3,
   } from "three";
+  import Child from "./models/child.svelte";
 
+  let childGeo: BufferGeometry;
   let adultGeo: BufferGeometry;
 
-  const w = 200;
-  const h = 200;
+  const w = 100;
+  const h = 100;
 
-  let instancedMesh: InstancedUniformsMesh<MeshStandardMaterial>;
+  let childInstancedMesh: InstancedUniformsMesh<MeshStandardMaterial>;
+  $: {
+    if (childGeo) {
+      childInstancedMesh = new InstancedUniformsMesh(
+        childGeo,
+        new MeshStandardMaterial(),
+        w * h
+      );
+
+      const mat4 = new Matrix4();
+      const vec3 = new Vector3();
+
+      for (let x = 0; x < w; x++) {
+        for (let y = 0; y < h; y++) {
+          vec3.set(x * 0.5 - w / 4, 0, y * 0.5 - h / 4);
+          mat4.setPosition(vec3);
+          const i = x * h + y;
+          childInstancedMesh.setMatrixAt(i, mat4);
+        }
+      }
+    }
+  }
+
+  let adultInstancedMesh: InstancedUniformsMesh<MeshStandardMaterial>;
   $: {
     if (adultGeo) {
-      instancedMesh = new InstancedUniformsMesh(
+      adultInstancedMesh = new InstancedUniformsMesh(
         adultGeo,
         new MeshStandardMaterial(),
         w * h
@@ -95,10 +120,10 @@
 
       for (let x = 0; x < w; x++) {
         for (let y = 0; y < h; y++) {
-          vec3.set(x * 0.3 - w / 6, 0, y * 0.3 - h / 6);
+          vec3.set(x * 0.5 + 0.25 - w / 4, 0, y * 0.5 - h / 4 + 0.1);
           mat4.setPosition(vec3);
           const i = x * h + y;
-          instancedMesh.setMatrixAt(i, mat4);
+          adultInstancedMesh.setMatrixAt(i, mat4);
         }
       }
     }
@@ -106,9 +131,14 @@
 </script>
 
 <Adult bind:ref={adultGeo} />
+<Child bind:ref={childGeo} />
 
-{#if instancedMesh}
-  <T is={instancedMesh} />
+{#if childInstancedMesh}
+  <T is={childInstancedMesh} />
+{/if}
+
+{#if adultInstancedMesh}
+  <T is={adultInstancedMesh} />
 {/if}
 
 <!-- <Cluster count={clusterCount} array={$clusterData} /> -->

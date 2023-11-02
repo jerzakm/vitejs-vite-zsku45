@@ -11,9 +11,11 @@ Command: npx @threlte/gltf@2.0.0 ./src/statics/models/child.glb
   const gltf = useGltf(`/child-v1.glb`, { useDraco: true });
 
   const component = forwardEventHandlers();
+  export let ref;
 
   $: if ($gltf) {
     const geometry = $gltf.nodes.child.geometry;
+    ref = geometry;
 
     if (!$childModified) {
       geometry.scale(0.1, 0.1, 0.1);
